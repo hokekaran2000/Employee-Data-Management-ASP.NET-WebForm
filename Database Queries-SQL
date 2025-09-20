@@ -1,0 +1,120 @@
+-- ✅ Department Table with Identity
+
+CREATE TABLE Department (
+    DeptId INT IDENTITY(10,10) PRIMARY KEY,
+    DeptName NVARCHAR(50) NOT NULL,
+    Location NVARCHAR(50) NOT NULL
+);
+
+
+-- Insert into Department (DeptId will auto generate)
+
+INSERT INTO Department (DeptName, Location)
+VALUES ('HR', 'Mumbai'),
+       ('IT', 'Bangalore'),
+       ('Finance', 'Delhi');
+
+
+
+-- ✅ Employees Table with Identity
+
+CREATE TABLE Employee (
+    EmpId INT IDENTITY(101,1) PRIMARY KEY, 
+    Name VARCHAR(50) NOT NULL,
+    Gender CHAR(1) NOT NULL,
+    DOB DATE NOT NULL,
+    Mobile VARCHAR(15) NOT NULL,
+    Email VARCHAR(50) NOT NULL,
+    City VARCHAR(20) NOT NULL,
+    State VARCHAR(20) NOT NULL,
+    PostalCode VARCHAR(10) NOT NULL,
+    DeptNo INT NOT NULL,
+    FOREIGN KEY (DeptNo) REFERENCES Department(DeptId)
+);
+
+
+
+--  1️⃣ Select_Department (only DeptId and DeptName)
+
+CREATE PROCEDURE Select_Department
+AS
+BEGIN
+    SELECT DeptId, DeptName 
+    FROM Department;
+END;
+
+
+
+--  2️⃣ Insert_Employee
+
+CREATE PROCEDURE Insert_Employee
+    @Name VARCHAR(50),
+    @Gender CHAR(1),
+    @DOB DATE,
+    @Mobile VARCHAR(15),
+    @Email VARCHAR(50),
+    @City VARCHAR(20),
+    @State VARCHAR(20),
+    @PostalCode VARCHAR(10),
+    @DeptNo INT
+AS
+BEGIN
+    INSERT INTO Employee (Name, Gender, DOB, Mobile, Email, City, State, PostalCode, DeptNo)
+    VALUES (@Name, @Gender, @DOB, @Mobile, @Email, @City, @State, @PostalCode, @DeptNo);
+END;
+
+
+
+--  3️⃣ Update_Employee
+
+CREATE PROCEDURE Update_Employee
+    @EmpId INT,
+    @Name VARCHAR(50),
+    @Gender CHAR(1),
+    @DOB DATE,
+    @Mobile VARCHAR(15),
+    @Email VARCHAR(50),
+    @City VARCHAR(20),
+    @State VARCHAR(20),
+    @PostalCode VARCHAR(10),
+    @DeptNo INT
+AS
+BEGIN
+    UPDATE Employee
+    SET Name = @Name,
+        Gender = @Gender,
+        DOB = @DOB,
+        Mobile = @Mobile,
+        Email = @Email,
+        City = @City,
+        State = @State,
+        PostalCode = @PostalCode,
+        DeptNo = @DeptNo
+    WHERE EmpId = @EmpId;
+END;
+
+
+
+--  4️⃣ GetEmployee (get employee_id using Mobile and Email)
+
+CREATE PROCEDURE GetEmployee
+    @Mobile VARCHAR(15),
+    @Email VARCHAR(50)
+AS
+BEGIN
+    SELECT EmpId
+    FROM Employee
+    WHERE Mobile = @Mobile AND Email = @Email;
+END;
+
+
+
+--  5️⃣ Delete_Employee
+
+CREATE PROCEDURE Delete_Employee
+    @EmpId INT
+AS
+BEGIN
+    DELETE FROM Employee
+    WHERE EmpId = @EmpId;
+END;
