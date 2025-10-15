@@ -6,6 +6,7 @@ CREATE TABLE Department (
     Location NVARCHAR(50) NOT NULL
 );
 
+
 -- Insert into Department (DeptId will auto generate)
 
 INSERT INTO Department (DeptName, Location)
